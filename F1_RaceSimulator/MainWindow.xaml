@@ -1,0 +1,213 @@
+﻿<Window x:Class="F1_RaceSimulator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:F1_RaceSimulator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="800">
+    <Window.Resources>
+        <local:ReverseProgressBarColorConverter x:Key="ReverseColorConverter" />
+        <local:ProggressBarToColorConverter x:Key="ProgressBarColorConverter"/>
+        <local:WeatherColorConverter x:Key="WeatherColorConverter"/>
+        <local:RecklessToTextConverter x:Key="RecklessToTextConverter"/>
+        <Style TargetType="ProgressBar">
+            <Setter Property="Foreground" Value="{Binding Value, RelativeSource={RelativeSource Self}, Converter={StaticResource ProgressBarColorConverter}}"/>
+        </Style>
+    </Window.Resources>
+    <Grid Background="LightGray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="Black" BorderThickness="2" Grid.Column="0">
+            <StackPanel>
+                <Label Content="Driver" Height="48" FontSize="30" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" HorizontalContentAlignment="Center"/>
+                <ComboBox x:Name="lbox_drivers" Height="34" FontSize="20" ItemsSource="{Binding Drivers}" DisplayMemberPath="DriverName" SelectedItem="{Binding SelectedDriver}"
+                           HorizontalAlignment="Left" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="196"/>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Experience" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="4" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <Label Grid.Column="1" Content="Age:" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Bottom" Padding="0"/>
+                    <Label Grid.Column="2" Content="{Binding SelectedDriver.Age}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedDriver.Experience}" Background="WhiteSmoke"/>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Track Speed" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="4" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding SelectedDriver.Speed}" FontSize="20" FontWeight="Bold" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedDriver.Speed}" Background="WhiteSmoke"/>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Driving in rain" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="3" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding SelectedDriver.RainSkills}" FontSize="20" FontWeight="Bold" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedDriver.RainSkills}" Background="WhiteSmoke"/>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Label Content="Reckless?" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="3" Width="157" HorizontalAlignment="Left"/>
+                <Label Content="{Binding SelectedDriver.IsReckless, Converter={StaticResource RecklessToTextConverter}}" FontSize="12" Padding="5" FontWeight="Bold" Height="60"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Button Content="Custom Driver" FontSize="25" FontWeight="Bold" Background="Gray" Height="44" Foreground="DarkRed"
+                        Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding AddNewDriverCommand}"/>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+            </StackPanel>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="2" Grid.Column="1">
+            <StackPanel>
+                <Label Content="Car" Height="48" FontSize="30" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" HorizontalContentAlignment="Center"/>
+                <ComboBox x:Name="lbox_cars" Height="34" FontSize="20" ItemsSource="{Binding Cars}" DisplayMemberPath="Manufacturer" SelectedItem="{Binding SelectedCar}"
+                            HorizontalAlignment="Left" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="196"/>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Performance" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="4" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding SelectedCar.Performance}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedCar.Performance}" Background="WhiteSmoke"/>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Reliability" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="4" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding SelectedCar.Reliability}" FontSize="20" FontWeight="Bold" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedCar.Reliability}" Background="WhiteSmoke"/>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Corners" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="3" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding SelectedCar.CornerScore}" FontSize="20" FontWeight="Bold" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedCar.CornerScore}" Background="WhiteSmoke"/>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Border BorderThickness="10" BorderBrush="LightGray"></Border>
+                <Image Width="100" Height="100" Source="{Binding SelectedCarImage}" />
+            </StackPanel>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="2" Grid.Column="2">
+            <StackPanel>
+                <Label Content="Crew" Height="48" FontSize="30" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" HorizontalContentAlignment="Center"/>
+                <ComboBox x:Name="lbox_crews" Height="34" FontSize="20" ItemsSource="{Binding Crews}" DisplayMemberPath="TeamName" SelectedItem="{Binding SelectedCrew}"
+                    HorizontalAlignment="Left" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="196"/>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Pitstop Speed" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="4" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding SelectedCrew.PitstopSpeed}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedCrew.PitstopSpeed}" Background="WhiteSmoke"/>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Pitstop Quality" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="4" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding SelectedCrew.PitstopQuality}" FontSize="20" FontWeight="Bold" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedCrew.PitstopQuality}" Background="WhiteSmoke"/>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Strategy" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="3" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding SelectedCrew.Strategy}" FontSize="20" FontWeight="Bold" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedCrew.Strategy}" Background="WhiteSmoke"/>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Border BorderThickness="10" BorderBrush="LightGray"></Border>
+                <Image Width="100" Height="100" Source="{Binding SelectedCrewImage}" />
+            </StackPanel>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="2" Grid.Column="3">
+            <StackPanel>
+                <Label Content="Track" Height="48" FontSize="30" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" HorizontalContentAlignment="Center"/>
+                <ComboBox x:Name="cbox_tracks" Height="34" FontSize="20" ItemsSource="{Binding Tracks}" DisplayMemberPath="TrackName" SelectedItem="{Binding SelectedTrack}"
+                    HorizontalAlignment="Left" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="196"/>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="Difficulty" FontSize="20" Background="DarkRed" Foreground="WhiteSmoke" FontWeight="Bold" Padding="4" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding SelectedTrack.Difficulty}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0"/>
+                </Grid>
+                <Border BorderBrush="LightGray" BorderThickness="10">
+                    <ProgressBar Height="18" Minimum="0" Maximum="100" Value="{Binding SelectedTrack.Difficulty}" Background="WhiteSmoke">
+                        <ProgressBar.Foreground>
+                            <Binding Path="Value" RelativeSource="{RelativeSource Self}" Converter="{StaticResource ReverseColorConverter}" />
+                        </ProgressBar.Foreground>
+                    </ProgressBar>
+                </Border>
+                <Border BorderThickness="2" BorderBrush="Black"></Border>
+                <Label Content="{Binding SelectedTrack.Weather}" FontSize="20" FontWeight="Bold" HorizontalContentAlignment="Center"
+                       Padding="10"  Foreground="Black" Width="200">
+                    <Label.Background>
+                        <Binding Path="SelectedTrack.Weather" Converter="{StaticResource WeatherColorConverter}" />
+                    </Label.Background>
+                </Label>
+                <Border BorderThickness="5" BorderBrush="LightGray"></Border>
+                <Image Width="200" Height="150" Source="{Binding SelectedTrackImage}" />
+                <Grid Height="90">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="1" Content="Simulate Race" FontSize="25" FontWeight="Bold" Background="DarkRed" Height="44" Foreground="WhiteSmoke"
+                            Padding="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                            Command="{Binding SimulateRaceCommand}" VerticalAlignment="Bottom"
+                            BorderBrush="Black" BorderThickness="4"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

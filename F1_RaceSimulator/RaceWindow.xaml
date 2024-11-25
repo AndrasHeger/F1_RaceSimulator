@@ -1,0 +1,128 @@
+﻿<Window x:Class="F1_RaceSimulator.RaceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:F1_RaceSimulator"
+        mc:Ignorable="d"
+        Title="RaceWindow" Height="500" Width="620" Background="Black">
+    <Window.Resources>
+        <local:TeamToColorConverter x:Key="TeamColorConverter" />
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Background" Value="DarkRed" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+        </Style>
+    </Window.Resources>
+    
+    
+    <Grid Margin="10" Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            
+            <Label Grid.Row="0" Grid.Column="0" Content="{Binding Track.TrackName}" FontSize="40" FontWeight="Bold" Foreground="Black" 
+                HorizontalAlignment="Left" VerticalAlignment="Top" Padding="15"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="{Binding CurrentTime}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="15"/>
+            <Image Grid.Row="0" Grid.Column="1" Source="{Binding TrackImage}" HorizontalAlignment="Left" Width="150" Height="100" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
+            
+            <StackPanel Grid.Row="0" Grid.Column="2">
+                <Label  Content="Weather:" FontWeight="Bold" FontSize="16"/>
+                <Label  Content="{Binding Track.Weather}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="0" Grid.Column="3">
+                <Label Content="Difficulty:" FontWeight="Bold" FontSize="16"/>
+                <Label Content="{Binding Track.Difficulty}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </Grid>
+
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="10">
+
+            <GroupBox Header="Race Results" FontWeight="Bold" Margin="0,0,0,10">
+                <ListView ItemsSource="{Binding Grid}" BorderBrush="Black" BorderThickness="1" FontSize="14" Foreground="Black">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Position" Width="60" DisplayMemberBinding="{Binding Position}"/>
+                            <GridViewColumn Header="Driver" Width="140" DisplayMemberBinding="{Binding Driver.DriverName}"/>
+
+                            <GridViewColumn Header="Car" Width="130">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Car.Manufacturer}" 
+                                       Foreground="{Binding Car.Manufacturer, Converter={StaticResource TeamColorConverter}}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            
+                            <GridViewColumn Header="Team" Width="130">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Crew.TeamName}" 
+                                       Foreground="{Binding Crew.TeamName, Converter={StaticResource TeamColorConverter}}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="Race Points" Width="80" DisplayMemberBinding="{Binding Points}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </GroupBox>
+
+
+            <GroupBox Header="Did Not Finish (DNF)" FontWeight="Bold">
+                <ListView ItemsSource="{Binding DNFTeams}" BorderBrush="Black" BorderThickness="1" Foreground="Black" FontSize="14">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Position" Width="60">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="DNF" Foreground="Red" FontWeight="Bold" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="Driver" Width="140" DisplayMemberBinding="{Binding Driver.DriverName}"/>
+
+                            <GridViewColumn Header="Car" Width="130">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Car.Manufacturer}" 
+                                                    Foreground="{Binding Car.Manufacturer, Converter={StaticResource TeamColorConverter}}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            
+                            <GridViewColumn Header="Team" Width="130">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Crew.TeamName}" 
+                                       Foreground="{Binding Crew.TeamName, Converter={StaticResource TeamColorConverter}}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Header="Race Points" Width="80" DisplayMemberBinding="{Binding Points}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </GroupBox>
+        </StackPanel>
+
+
+        <Button Grid.Row="2" Content="New Race" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"
+                Command="{Binding CloseWindowCommand}" Background="DarkRed" Foreground="WhiteSmoke" Padding="5" Margin="468,0,0,0"/>
+    </Grid>
+</Window>
